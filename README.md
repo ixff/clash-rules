@@ -1,3 +1,40 @@
+## 说明
+
+1. 本仓库目的在于让PT站点tracker服务器域名直连而不走代理。
+2. 相比原仓库的变化：
+   
+   数据源由 [v2fly/domain-list-community](https://github.com/v2fly/domain-list-community) --> [ixff/domain-list-community](https://github.com/ixff/domain-list-community)、[Loyalsoldier/domain-list-custom](https://github.com/Loyalsoldier/domain-list-custom) --> [ixff/domain-list-custom](https://github.com/ixff/domain-list-custom)，其唯一改变是完善了[data/category-pt](https://github.com/ixff/domain-list-community/blob/master/data/category-pt)。
+3. 使用方法：
+   
+   （mihomo内核建议直接使用 [ixff/v2ray-rules-dat](https://github.com/ixff/v2ray-rules-dat) 仓库的.dat文件，配置上可以更灵活。）
+
+   **在线地址（URL）**
+     - PT站点域名列表 category-pt.txt：
+       - [https://raw.githubusercontent.com/ixff/clash-rules/release/category-pt.txt](https://raw.githubusercontent.com/ixff/clash-rules/release/category-pt.txt)
+
+      （注：可能会有“漏网之鱼”，原因见2中数据源仓库category-pt文件顶部的说明。）
+   
+   使用方法同下方[使用方式](#使用方式)，只需要在 Clash 配置文件中添加如下 `rule-providers` 和 `rules`。
+   
+   **Rule Providers 配置**
+    ```yaml
+    rule-providers:
+      category-pt:
+        type: http
+        behavior: domain
+        url: "https://raw.githubusercontent.com/ixff/clash-rules/release/category-pt.txt"
+        path: ./ruleset/category-pt.yaml
+        interval: 86400
+      等等
+    ```
+   **Rules 配置**
+    ```yaml
+    rules:
+      - RULE-SET,category-pt,DIRECT
+      - 等等
+    ```
+4. 如果你发现缺少某些站点域名或其tracker域名，请[到 ixff/domain-list-community 仓库提issue](https://github.com/ixff/domain-list-community/issues/new?assignees=&labels=&projects=&template=%E5%9F%9F%E5%90%8D%E6%9B%B4%E6%96%B0.md&title=%E3%80%90%E5%9F%9F%E5%90%8D%E6%9B%B4%E6%96%B0%E3%80%91XXX)，维护该列表需要大家的共同努力。
+
 # 简介
 
 本项目生成适用于 [**Clash Premium 内核**](https://github.com/Dreamacro/clash/releases/tag/premium)的规则集（RULE-SET），同时适用于所有使用 Clash Premium 内核的 Clash 图形用户界面（GUI）客户端。使用 GitHub Actions 北京时间每天早上 6:30 自动构建，保证规则最新。
