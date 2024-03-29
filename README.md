@@ -6,14 +6,8 @@
    数据源由 [v2fly/domain-list-community](https://github.com/v2fly/domain-list-community) --> [ixff/domain-list-community](https://github.com/ixff/domain-list-community)、[Loyalsoldier/domain-list-custom](https://github.com/Loyalsoldier/domain-list-custom) --> [ixff/domain-list-custom](https://github.com/ixff/domain-list-custom)，其唯一改变是完善了[category-pt](https://github.com/ixff/domain-list-community/blob/master/data/category-pt)。
 3. 使用方法：
    
-   （mihomo内核建议直接使用 [ixff/v2ray-rules-dat](https://github.com/ixff/v2ray-rules-dat) 仓库的.dat文件，配置上可以更灵活。）
+   （clash meta/mihomo内核建议直接使用 [ixff/v2ray-rules-dat](https://github.com/ixff/v2ray-rules-dat) 仓库的.dat文件，配置上可以更灵活。）
 
-   **在线地址（URL）**
-     - PT站点域名列表 category-pt.txt：
-       - [https://raw.githubusercontent.com/ixff/clash-rules/release/category-pt.txt](https://raw.githubusercontent.com/ixff/clash-rules/release/category-pt.txt)
-
-      （注：可能会有“漏网之鱼”，原因见2中数据源仓库category-pt文件顶部的说明。）
-   
    使用方法同下方[使用方式](#使用方式)，只需要在 Clash 配置文件中添加如下 `rule-providers` 和 `rules`。
    
    **Rule Providers 配置**
@@ -33,6 +27,8 @@
       - RULE-SET,category-pt,DIRECT
       - 等等
     ```
+
+    （注：可能会有“漏网之鱼”，原因见2中数据源仓库category-pt文件顶部的说明。）
 4. 如果你发现缺少某些站点域名或其tracker域名，请[到 ixff/domain-list-community 仓库提issue](https://github.com/ixff/domain-list-community/issues/new?assignees=&labels=&projects=&template=%E5%9F%9F%E5%90%8D%E6%9B%B4%E6%96%B0.md&title=%E3%80%90%E5%9F%9F%E5%90%8D%E6%9B%B4%E6%96%B0%E3%80%91XXX)，维护该列表需要大家的共同努力。
 
 # 简介
