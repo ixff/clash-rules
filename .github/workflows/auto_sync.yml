@@ -1,0 +1,74 @@
+name: Sync with Upstream
+
+on:
+  workflow_dispatch: # Trigger manually
+  schedule: # Optionally trigger at a specific time
+    - cron: "15 22 * * *"
+
+jobs:
+  rebase:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v4
+      with:
+        ref: master
+        fetch-depth: 0
+        token: ${{ secrets.WORKFLOW_TOKEN }}
+
+    - name: Configure Git
+      run: |
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+    - name: Add upstream remote
+      run: |
+        git remote add upstream https://github.com/Loyalsoldier/clash-rules
+        git fetch upstream
+
+        behind_count=$(git rev-list --right-only --count HEAD...upstream/master)
+        echo "Commits behind upstream: $behind_count"
+        # if [ "$ahead_count" -eq 0 ] && [ "$behind_count" -eq 0 ]; then
+        #   echo "The fork is up to date with the upstream."
+        #   exit 0
+        # else
+        #     echo "The fork is behind by $behind_count commits and ahead by $ahead_count commits."
+        # fi
+        # if [ "$ahead_count" -ne 0 ] || [ "$behind_count" -ne 0 ]; then
+        #   echo "The repository is not in sync with upstream."
+        #   # You can add notifications here if needed
+        # fi
+        if [ "$behind_count" -eq 0 ]; then
+          echo "The fork is not behind the upstream."
+          echo "DoRebase=false" >> $GITHUB_ENV
+        else
+          echo "DoRebase=true" >> $GITHUB_ENV
+        fi
+
+    - name: Rebase onto upstream/master
+      if: ${{ env.DoRebase == 'true' }}
+      run: |
+        git rebase upstream/master || {
+          echo "Checking for conflicts..."
+          if git status --porcelain | grep -p '^UU '; then
+            git status --porcelain | grep '^UU ' | cut -c 4- | while read -r filename; do
+              echo "Resolving conflict in $filename by choosing 'theirs' version"
+              git checkout --theirs -- "$filename"
+              git add "$filename"
+            done
+            git rebase --continue || {
+              echo "Rebase failed during continue. Resolve conflicts manually."
+              exit 1
+            }
+          else
+            echo "No conflicts detected."
+          fi
+        }
+
+    - name: Push changes to origin
+      if: ${{ env.DoRebase == 'true' }}
+      run: |
+        git push origin master --force-with-lease
+
+
