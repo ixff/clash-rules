@@ -15,7 +15,7 @@
     rule-providers:
       category-pt:
         type: http
-        behavior: classical
+        behavior: domain
         url: "https://raw.githubusercontent.com/ixff/clash-rules/release/category-pt.txt"
         path: ./ruleset/category-pt.yaml
         interval: 86400

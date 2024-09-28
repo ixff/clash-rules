@@ -61,9 +61,8 @@ jobs:
       - name: Generate category-pt.txt file
         run: |
             echo "payload:" > category-pt.txt
-            curl -sSL ${custom_pt} | awk -F ':' '/^keyword:/ {printf "  - |DOMAIN-KEYWORD, %s|\n", $2}' | sed "s/|//g" >> category-pt.txt
-            curl -sSL ${custom_pt} | awk -F ':' '/^full:/ {printf "  - |DOMAIN, %s|\n", $2}' | sed "s/|//g" >> category-pt.txt
-            curl -sSL ${custom_pt} | awk -F ':' '/^domain:/ {printf "  - |DOMAIN-SUFFIX, %s|\n", $2}' | sed "s/|//g" >> category-pt.txt
+            curl -sSL ${custom_pt} | awk -F ':' '/^full:/ {printf "  - |%s|\n", $2}' | sed "s/|/'/g" >> category-pt.txt
+            curl -sSL ${custom_pt} | awk -F ':' '/^domain:/ {printf "  - |+.%s|\n", $2}' | sed "s/|/'/g" >> category-pt.txt
 
       - name: Generate direct.txt file
         run: |
