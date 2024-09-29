@@ -1,3 +1,5 @@
+## 本仓库不再维护，请使用 [ixff/meta-rules-dat](https://github.com/ixff/meta-rules-dat)
+
 ## 说明
 
 1. 本仓库目的在于让PT站点tracker服务器域名直连而不走代理。
